@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	 xmlns:security="http://www.springframework.org/schema/security"  
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd
+	 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+ 
+     http://www.springframework.org/schema/tx
+  	http://www.springframework.org/schema/tx/spring-tx.xsd
+  	 http://www.springframework.org/schema/security  
+                           http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+ 
+
+
+<context:component-scan base-package="com.ps.test"></context:component-scan>
+  
+  <!--   <mvc:resources mapping="/**" location="/css/" /> 
+  <mvc:resources mapping="/**" location="/js/" /> 
+   <mvc:resources mapping="/img/**" location="/img/" />  -->
+   
+<tx:annotation-driven transaction-manager = "hibernateTransactionManager"></tx:annotation-driven>
+
+<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+	
+	
+	<mvc:annotation-driven>
+    <mvc:message-converters>
+        <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+    </mvc:message-converters>
+</mvc:annotation-driven>
+
+	<bean class="org.springframework.orm.hibernate5.HibernateTransactionManager"
+		id="hibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+		id="sessionFactory" primary="true">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="packagesToScan" value="com.ps.test.dto"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.jdbc.batch_size">50</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="dataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/theme"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+
+	</bean>
+
+
+<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name = "prefix" value = "/WEB-INF/jsp/"></property>
+	<property name = "suffix" value= ".jsp"></property>
+
+	</bean>
+	
+	
+	
+	<!-- <bean class="org.springframework.mail.javamail.JavaMailSenderImpl" 
+		id="mailSender"> <property value="smtp.gmail.com" name="host" /> <property 
+		value="8888" name="port" /> <property value="pratibhask4@gmail.com" name="username" /> 
+		<property value="sweetprati" name="password" /> <property name="javaMailProperties"> 
+		<props> <prop key="mail.transport.protocol">smtp</prop> <prop key="mail.smtp.auth">true</prop> 
+		<prop key="mail.smtp.starttls.enable">true</prop> <prop key="mail.smtp.socketFactory.port">465</prop> 
+		<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop> 
+		<prop key="mail.smtp.port">465</prop> </props> </property> </bean> -->
+	
+	
+	
+	
+	
+ 
+</beans>
+

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                           http://www.springframework.org/schema/beans/spring-beans.xsd  
+                           http://www.springframework.org/schema/security  
+                           http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+	<!-- <bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler" 
+		/> <security:global-method-security pre-post-annotations="enabled"> <security:expression-handler 
+		ref="expressionHandler"/> </security:global-method-security> -->
+
+	<security:http auto-config="true" use-expressions="true">
+		<security:intercept-url pattern="*/css/**" access="permitAll" />
+		<security:intercept-url pattern="*/img/**" access="permitAll" />
+		<security:intercept-url pattern="*/images/**" access="permitAll" />
+		<security:intercept-url pattern="*/js/**" access="permitAll" />
+		<security:intercept-url pattern="/login*" access="permitAll" />
+		
+		<security:intercept-url pattern="/load_reg*" access="permitAll" />
+		
+		<!-- <security:intercept-url pattern="/logout*" access="permitAll" />
+		<security:intercept-url pattern="/error1*" access="permitAll" />
+		<security:intercept-url pattern="/fail2login*" access="permitAll" />
+		<security:intercept-url pattern="/load_registration*" access="permitAll" /> -->
+		
+		
+		
+		
+		<!-- <security:intercept-url pattern="/forgotPass*" access="permitAll" /> -->
+		
+		
+		<security:intercept-url pattern="/test.html" access="isAuthenticated()" />
+		<security:intercept-url pattern="/form.html" access="hasRole('ROLE_ADMIN')" />
+		
+		
+		<!-- <security:intercept-url pattern="/court/*" access="isAuthenticated()" />
+		
+		
+		<security:intercept-url pattern="/*test1" access="hasRole('Supervisor_index_update_Y')" />
+
+		<security:intercept-url pattern="/index*" access="isAuthenticated()" />
+		<security:intercept-url pattern="/em*" access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/index12*" access="isAuthenticated()" /> -->
+		<security:intercept-url pattern="/login.html" access="isAuthenticated()" />
+		<security:intercept-url pattern="/*" access="isAuthenticated()" />
+		<security:form-login login-page="/login.html" 
+							 default-target-url="/index11.html" 
+							 authentication-failure-url="/login.html"
+							 always-use-default-target="true" />
+		<security:access-denied-handler
+			error-page="/403.html" />
+		<security:logout logout-success-url="/logout.html" />
+	</security:http>
+
+
+	<!-- <security:authentication-manager>
+		<security:authentication-provider
+			ref="customAuthenticationProvider" />
+	</security:authentication-manager>
+	 -->
+	
+	<security:authentication-manager> <security:authentication-provider> 
+		<security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select username,password, 
+		enabled from users where username=?" authorities-by-username-query="select username, role from user_roles where username =? "  />
+		 </security:authentication-provider> </security:authentication-manager> 
+	
+	
+	
+	
+	
+	
+	<!--  <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="admin" password="1" authorities="ROLE_ADMIN" />
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager> -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<!-- <security:authentication-manager> <security:authentication-provider> 
+		<security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select 
+		username,password,active from users where username=?" authorities-by-username-query="select 
+		us.username,ur.authority from users us,user_roles ur where us.user_id = ur.user_id 
+		and us.username=?" /> </security:authentication-provider> </security:authentication-manager> -->
+
+	<!-- <security:authentication-manager> <security:authentication-provider> 
+		<security:password-encoder hash="sha-256"/> <security:password-encoder ref="passwordEncoder" 
+		/> <security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select 
+		username,password,active from users where username=?" authorities-by-username-query="select 
+		us.username,ur.authority from users us,user_roles ur where us.user_id = ur.user_id 
+		and us.username=?" /> </security:authentication-provider> </security:authentication-manager> -->
+
+</beans>
